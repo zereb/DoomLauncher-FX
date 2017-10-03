@@ -29,7 +29,7 @@ public class ProcessBuilderD extends Observable implements Runnable{
     private Process process;
 
 
-    public ProcessBuilderD(String cmd){
+    public ProcessBuilderD(String[] cmd){
         try {
             
             process = Runtime.getRuntime().exec(cmd);
@@ -46,7 +46,7 @@ public class ProcessBuilderD extends Observable implements Runnable{
 
 
         } catch (IOException e) {
-            System.err.println(e.toString());
+           Printer.print(e.toString());
         }
 
     }
@@ -64,7 +64,7 @@ public class ProcessBuilderD extends Observable implements Runnable{
         try {
             deleteObservers();
         } catch (Exception e) {
-            System.err.println(e);
+           Printer.print(e.toString());
         }
     }
 
@@ -89,14 +89,14 @@ public class ProcessBuilderD extends Observable implements Runnable{
         try {
 
 
-            while ((outEXELine = bufferedReader.readLine()+"\n") != null && exitValue()==1) {
+            while ((outEXELine = bufferedReader.readLine()) != null && exitValue()==1) {
                if (exitValue()==0) {
                     closeProcess();
                     break;
                 }else{
-                   
+                Printer.print(outEXELine);
                 outEXE=outEXE.concat(outEXELine);
-                stateChanged();
+               // stateChanged();
 
                 }
                 try {
@@ -109,7 +109,7 @@ public class ProcessBuilderD extends Observable implements Runnable{
 
             }
         } catch (IOException ex) {
-            System.err.println(ex);
+           Printer.print(ex.toString());
         }
     }
 

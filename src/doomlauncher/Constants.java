@@ -6,6 +6,9 @@
 
 package doomlauncher;
 
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+
 /**
  *
  * @author Plett Oleg
@@ -19,9 +22,13 @@ public interface Constants{
     
     
     
-    public static final String CONFIG_PROPERTY_ENGINE="ENGINE";
-    public static final String CONFIG_PROPERTY_IWAD_PATH="IWAD_PATH";
-    public static final String CONFIG_PROPERTY_CURR_ENGINE="CURRENT_ENGINE_PATH";
+    public static final String CFG_PR_ENGINE="ENGINE";
+    public static final String CFG_PR_IWAD_PATH="IWAD_PATH";
+    public static final String CFG_PR_DEFAULT_FOLDER="DEFAULT_FOLDER";
+    
+    public static final ExtensionFilter EF_ALL= new ExtensionFilter("All Files", "**");
+    public static final ExtensionFilter EF_WAD= new ExtensionFilter("Wad files", "*.wad");
+    public static final ExtensionFilter EF_PWAD= new ExtensionFilter("Wad files", "*.wad", "*.pk3", "*.zip", "*.ini");
     
     
     public static final String[] IWAD_NAMES={

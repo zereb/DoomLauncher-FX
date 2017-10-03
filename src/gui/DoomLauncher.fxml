@@ -10,41 +10,40 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="doomlauncher.Controller">
+<VBox minHeight="-Infinity" spacing="5.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="doomlauncher.Controller">
    <children>
       <HBox alignment="CENTER" spacing="5.0">
          <children>
             <Label text="Engine:" />
-            <ComboBox fx:id="cbEngine"  />
-            <Button  text="..." />
-            <Button fx:id="btnAddEngine" onAction="#addEngine"  text="Add new" />
+            <ComboBox fx:id="cbEngine" />
+            <Button fx:id="btnChangeEngine" onAction="#changeEngine" text="..." />
+            <Button fx:id="btnAddEngine" onAction="#addEngine" text="Add new" />
             <Label text="IWad:" />
-            <ComboBox fx:id="cbIwad" 
-            />
-            <Button  text="...." />
+            <ComboBox fx:id="cbIwad" />
+            <Button onAction="#changeIwad" text="..." />
          </children>
       </HBox>
       <Label text="Addition files:" />
       <AnchorPane VBox.vgrow="ALWAYS">
          <children>
-            <ListView AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <ListView fx:id="lwPwad" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
       <HBox alignment="CENTER" spacing="5.0">
          <children>
-            <Button  text="Button" />
-            <Button  text="Button" />
-            <Button  text="Button" />
+            <Button fx:id="btnAddPwad" onAction="#addPwad" text="Add" />
+            <Button fx:id="btnRemovePwad" onAction="#removePwad" text="Remove" />
+            <Button fx:id="btnRemoveAllPwad" onAction="#removeAllPwad" text="Remove all" />
          </children>
       </HBox>
       <Label text="Out:" />
-      <TextArea editable="false" prefHeight="200.0" prefWidth="200.0" />
+      <TextArea fx:id="taOut" editable="false" prefHeight="252.0" prefWidth="549.0" />
       
       <HBox alignment="CENTER" spacing="5.0">
          <children>
-            <Button  text="Button" />
-            <Button  text="Button" />
-            <Button fx:id="btnLaunch"  onAction="#launch" text="Launch" />
+            <Button text="Button" />
+            <Button text="Button" />
+            <Button fx:id="btnLaunch" onAction="#launch" text="Launch" />
          </children>
       </HBox>
    </children>

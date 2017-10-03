@@ -22,10 +22,8 @@ import javafx.scene.control.ComboBox;
  */
 public class DoomLauncher extends Application implements Constants{
     
-    public static JConfig doomLauncherJConfig;
-    public static DoomLauncher dl;
     
-        
+    
             
     public static void main(String[] args) {
         launch(args);
@@ -33,11 +31,7 @@ public class DoomLauncher extends Application implements Constants{
     
     @Override
     public void init(){
-        doomLauncherJConfig=new JConfig(CONFIG_NAME);
-        if(doomLauncherJConfig.isConfigEmpty()){
-            doomLauncherJConfig.setConfigValue(CONFIG_PROPERTY_ENGINE, "Set engine");
-            doomLauncherJConfig.setConfigValue(CONFIG_PROPERTY_IWAD_PATH, "Set Iwad");
-        }
+        new Printer();
     }
     
     @Override
