@@ -71,7 +71,7 @@ public class Controller implements Initializable, Constants, Observer{
     }
     
     public void  addPwad(){
-       File selectedFile = getFile(EF_PWAD);
+       List<File> selectedFile = getFile(EF_PWAD, true);
         if (selectedFile != null) {
             files.addPwad(selectedFile);
             refresh();
@@ -153,6 +153,15 @@ public class Controller implements Initializable, Constants, Observer{
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(ef);
         return  fileChooser.showOpenDialog(fileChoose);
+    }
+    
+    private List<File> getFile(ExtensionFilter ef, boolean  OWERRIDE){
+        Stage fileChoose = new Stage();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(files.dlConfig.getConfigValue(CFG_PR_DEFAULT_FOLDER)));
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.getExtensionFilters().addAll(ef);
+        return  fileChooser.showOpenMultipleDialog(fileChoose);
     }
 
     @Override

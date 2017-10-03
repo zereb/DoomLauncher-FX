@@ -31,6 +31,8 @@ public class Files implements Constants{
            //Printer.print("Setting defauld config");
             dlConfig.setConfigValue(CFG_PR_ENGINE, "Set engine");
             dlConfig.setConfigValue(CFG_PR_IWAD_PATH, "/");
+            dlConfig.setConfigValue(CFG_PR_DEFAULT_FOLDER, "/");
+            dlConfig.setConfigValue(CFG_PR_PWADS, "");
         }
         
         readConfig();
@@ -49,7 +51,17 @@ public class Files implements Constants{
     }
     
     public void addPwad(File f){
-        pwads.add(new DLFile(f));
+      //  pwads.add(new DLFile(f));
+        dlConfig.setConfigValue(CFG_PR_PWADS,dlConfig.getConfigValue(CFG_PR_PWADS)+","+f.getAbsolutePath());
+        readConfig();
+    }
+    
+    public void addPwad(List<File> selectedFile) {
+        for (File file : selectedFile) {
+            //pwads.add(new DLFile(file));
+            dlConfig.setConfigValue(CFG_PR_PWADS,dlConfig.getConfigValue(CFG_PR_PWADS)+","+file.getAbsolutePath());
+            readConfig();
+        }
     }
     
     public void setEngine(File f, int index){
@@ -112,10 +124,14 @@ public class Files implements Constants{
     
     public void removePwad(int index){
         pwads.remove(index);
+        for (DLFile pwad : pwads) {
+            dlConfig.setConfigValue(CFG_PR_PWADS, pwad.getPath());
+        }
     }
     
     public void removeAllPwad(){
         pwads.clear();
+        dlConfig.setConfigValue(CFG_PR_PWADS, "");
     }
     
         
@@ -123,18 +139,30 @@ public class Files implements Constants{
     private void readConfig(){
         engines.clear();
         iwads.clear();
+        pwads.clear();
+        
         for (String engine : dlConfig.getConfigValue(CFG_PR_ENGINE).split(",")) {
             engines.add(new DLFile(engine));
         }
-        for (String iwadDirectory : dlConfig.getConfigValue(CFG_PR_IWAD_PATH).split(",")) {
-            for (File file : new File(iwadDirectory).listFiles()) {
-                for (String iwadName : IWAD_NAMES) {
-                    if (iwadName.contentEquals(file.getName().toLowerCase())) {
-                        iwads.add(new DLFile(file));
+        if(dlConfig.getConfigValue(CFG_PR_PWADS).length()>0){
+            for (String pwad : dlConfig.getConfigValue(CFG_PR_PWADS).split(",")) {
+                pwads.add(new DLFile(pwad));
+            }
+        }
+        if(dlConfig.getConfigValue(CFG_PR_IWAD_PATH).length()>0){
+            for (String iwadDirectory : dlConfig.getConfigValue(CFG_PR_IWAD_PATH).split(",")) {
+                for (File file : new File(iwadDirectory).listFiles()) {
+                    for (String iwadName : IWAD_NAMES) {
+                        if (iwadName.contentEquals(file.getName().toLowerCase())) {
+                            iwads.add(new DLFile(file));
+                        }
                     }
                 }
             }
         }
     }
+
+  
+
     
 }

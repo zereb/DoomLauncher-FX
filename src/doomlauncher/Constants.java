@@ -25,6 +25,7 @@ public interface Constants{
     public static final String CFG_PR_ENGINE="ENGINE";
     public static final String CFG_PR_IWAD_PATH="IWAD_PATH";
     public static final String CFG_PR_DEFAULT_FOLDER="DEFAULT_FOLDER";
+    public static final String CFG_PR_PWADS="ADDITIONAL_FILES";
     
     public static final ExtensionFilter EF_ALL= new ExtensionFilter("All Files", "**");
     public static final ExtensionFilter EF_WAD= new ExtensionFilter("Wad files", "*.wad");
