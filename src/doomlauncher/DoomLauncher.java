@@ -23,7 +23,8 @@ import javafx.scene.control.ComboBox;
 public class DoomLauncher extends Application implements Constants{
     
     
-    
+    private static Stage pStage;
+
             
     public static void main(String[] args) {
         launch(args);
@@ -40,6 +41,7 @@ public class DoomLauncher extends Application implements Constants{
         stageDoomLauncher.setTitle(TITLE_STRING);
         stageDoomLauncher.setMinHeight(WINDOW_HEIGHT);
         stageDoomLauncher.setMinWidth(WINDOW_WIDTH);
+        setPrimaryStage(stageDoomLauncher);
         Scene sceneDoomLauncher = new Scene(rootNode, WINDOW_WIDTH, WINDOW_HEIGHT);
         stageDoomLauncher.setScene(sceneDoomLauncher);
         stageDoomLauncher.show();
@@ -51,6 +53,15 @@ public class DoomLauncher extends Application implements Constants{
     public void stop(){
         
     }
+    
+     private void setPrimaryStage(Stage pStage) {
+        DoomLauncher.pStage = pStage;
+    }
+  
+    public static Stage getPrimaryStage() {
+        return pStage;
+    }
+
         
     
     

@@ -28,6 +28,7 @@ public interface Constants{
     public static final String CFG_PR_PWADS="ADDITIONAL_FILES";
     
     public static final ExtensionFilter EF_ALL= new ExtensionFilter("All Files", "**");
+    public static final ExtensionFilter EF_CFG= new ExtensionFilter("Config files", "*.cfg");
     public static final ExtensionFilter EF_WAD= new ExtensionFilter("Wad files", "*.wad");
     public static final ExtensionFilter EF_PWAD= new ExtensionFilter("Wad files", "*.wad", "*.pk3", "*.zip", "*.ini");
     

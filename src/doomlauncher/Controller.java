@@ -5,18 +5,24 @@
  */
 package doomlauncher;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
@@ -31,12 +37,46 @@ public class Controller implements Initializable, Constants, Observer{
     @FXML
     public ListView<String> lwPwad;
     @FXML
-    public TextArea taOut;
+    public TextArea taOut,taCustomParameters;
     
     public Files files;
     ProcessBuilderD processBuilderD;
 
     
+    
+    //GLOBAL MENU
+    public void editConfig() {
+        if (Desktop.isDesktopSupported()) {
+            new Thread(() -> {
+                try {
+                    Desktop.getDesktop().open(files.dlConfig.getConfigPath().toFile());
+                } catch (IOException e) {
+                    Printer.print(e.toString());
+                }
+            }).start();
+        }
+    }
+    
+    public void importConfig(){
+        File selectedFile = getFile(EF_CFG);
+        if (selectedFile != null) {
+            files=new Files(selectedFile.getAbsolutePath().replaceAll(".cfg", ""));
+            refresh();
+        }
+    }
+    public void exportConfig(){
+        File selectedFile = saveFile(EF_CFG);
+        if (selectedFile != null) {
+           files.dlConfig.saveConfig(selectedFile.getAbsolutePath());
+            refresh();
+        }
+    }
+    
+    public void about(){
+        Printer.print("info: https://github.com/zereb/DoomLauncherFX");
+    }
+    
+    //top buttons
     
     public void addEngine() {
         File selectedFile = getFile(EF_ALL);
@@ -46,14 +86,7 @@ public class Controller implements Initializable, Constants, Observer{
         }
     }
     
-    public void addIwad() {
-        File selectedFile = getFile(EF_WAD);
-        if (selectedFile != null) {
-            files.addIwad(selectedFile);
-            refresh();
-        }
-    }
-    
+
     public void changeEngine(){
         File selectedFile = getFile(EF_ALL);
         if (selectedFile != null) {
@@ -65,7 +98,7 @@ public class Controller implements Initializable, Constants, Observer{
     public void changeIwad(){
         File selectedFile = getFile(EF_WAD);
         if (selectedFile != null) {
-            files.setEngine(selectedFile, cbEngine.getSelectionModel().getSelectedIndex());
+            files.setIwad(selectedFile);
             refresh();
         }
     }
@@ -88,43 +121,70 @@ public class Controller implements Initializable, Constants, Observer{
         refresh();
     }
     
-    
-    public void launch(){
-        List<String> cmd_list= new ArrayList<String>();
-        cmd_list.add(files.getEngine(cbEngine.getSelectionModel().getSelectedIndex()).getPath());
-        cmd_list.add("-iwad");
-        cmd_list.add(files.getIwad(cbIwad.getSelectionModel().getSelectedIndex()).getPath());
+    public void movePwadDown(){
+        try {
+            files.movePwadDown(lwPwad.getSelectionModel().getSelectedIndex());
+        } catch (IndexOutOfBoundsException e) {
+            Printer.print(e.toString());
+        }
         
-        for(DLFile pwad: files.getPwads()){
-            if(pwad.getName().toLowerCase().contains(".ini")){
-                 cmd_list.add("-config");
-                 cmd_list.add(pwad.getPath());
-            }
-            else if(pwad.getName().toLowerCase().contains(".pk3") || pwad.getName().toLowerCase().contains(".zip") || pwad.getName().toLowerCase().contains(".wad")){
-                cmd_list.add("-file");
-                cmd_list.add(pwad.getPath());
-            }
-            else{files.removePwad(files.getPwads().indexOf(pwad)); }
+        refresh();
+    }
+    public void movePwadUp(){
+        try {
+            files.movePwadUp(lwPwad.getSelectionModel().getSelectedIndex());
+        } catch (IndexOutOfBoundsException e) {
+            Printer.print(e.toString());
         }
- 
-        String[] cmd = cmd_list.toArray(new String[cmd_list.size()]);
-        for (String string : cmd) {
-           Printer.print(string);
-        }
-        processBuilderD = new ProcessBuilderD(cmd);
-        processBuilderD.addObserver(this);
+        refresh();
     }
     
     
+    public void showCommandLine(){
+        for (String cmd : getCMD()) {
+            Printer.print(cmd);
+        }
+    }
+    
+    
+    public void launch(){
+        processBuilderD = new ProcessBuilderD(getCMD());
+        processBuilderD.addObserver(this);
+    }
+
+    public String[] getCMD() {
+        List<String> cmd_list = new ArrayList<String>();
+        cmd_list.add(files.getEngine(cbEngine.getSelectionModel().getSelectedIndex()).getPath());
+        cmd_list.add("-iwad");
+        try {
+            cmd_list.add(files.getIwad(cbIwad.getSelectionModel().getSelectedIndex()).getPath());
+        } catch (IndexOutOfBoundsException e) {
+            Printer.print(e.toString());
+        }
+
+        for (DLFile pwad : files.getPwads()) {
+            if (pwad.getName().toLowerCase().contains(".ini")) {
+                cmd_list.add("-config");
+                cmd_list.add(pwad.getPath());
+            } else if (pwad.getName().toLowerCase().contains(".pk3") || pwad.getName().toLowerCase().contains(".zip") || pwad.getName().toLowerCase().contains(".wad")) {
+                cmd_list.add("-file");
+                cmd_list.add(pwad.getPath());
+            } else {
+                files.removePwad(files.getPwads().indexOf(pwad));
+            }
+        }
+        for (String parameter : taCustomParameters.getText().split(" ")) {
+            cmd_list.add(parameter);
+        }
+        String[] cmd = cmd_list.toArray(new String[cmd_list.size()]);
+        return  cmd;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        files=new Files();
+        files=new Files(CONFIG_NAME);
         Printer.printer.addObserver(this);
-     //   taOut.setText(Printer.getLogStr());
         refresh();
-        
-      
     }
     
     private void refresh(){
@@ -137,7 +197,6 @@ public class Controller implements Initializable, Constants, Observer{
         for (DLFile iwad : files.getIwads()) {
             cbIwad.getItems().add(iwad.getName());
         }
-       
         for(DLFile pwad : files.getPwads()){
             lwPwad.getItems().add(pwad.getPath());
         }
@@ -147,21 +206,26 @@ public class Controller implements Initializable, Constants, Observer{
     
     
     private File getFile(ExtensionFilter ef){
-        Stage fileChoose = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(files.dlConfig.getConfigValue(CFG_PR_DEFAULT_FOLDER)));
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(ef);
-        return  fileChooser.showOpenDialog(fileChoose);
+        return  fileChooser.showOpenDialog(DoomLauncher.getPrimaryStage());
+    }
+    private File saveFile(ExtensionFilter ef){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(files.dlConfig.getConfigValue(CFG_PR_DEFAULT_FOLDER)));
+        fileChooser.setTitle("Save Resource File");
+        fileChooser.getExtensionFilters().addAll(ef);
+        return  fileChooser.showSaveDialog(DoomLauncher.getPrimaryStage());
     }
     
-    private List<File> getFile(ExtensionFilter ef, boolean  OWERRIDE){
-        Stage fileChoose = new Stage();
+    private List<File> getFile(ExtensionFilter ef, boolean  OVERRIDE){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(files.dlConfig.getConfigValue(CFG_PR_DEFAULT_FOLDER)));
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(ef);
-        return  fileChooser.showOpenMultipleDialog(fileChoose);
+        return  fileChooser.showOpenMultipleDialog(DoomLauncher.getPrimaryStage());
     }
 
     @Override
