@@ -69,13 +69,12 @@
     properties which you can use, check the target you are overriding in the
     nbproject/build-impl.xml file. 
 
-    -->
+    --><!--
 <target name="-post-jar">
 
-    <!-- Change the value to the name of the final jar without .jar -->
+  
     <property name="store.jar.name" value="DoomLauncher"/>
 
-    <!-- don't edit below this line -->
     <property name="store.dir" value="dist"/>
     <property name="temp.dir" value="temp"/>
     <property name="store.jar" value="${store.dir}/${store.jar.name}.jar"/>
@@ -103,5 +102,5 @@
 
     <delete dir="${temp.dir}"/>
 
-</target>
+</target>-->
 </project>

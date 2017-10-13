@@ -46,15 +46,7 @@ public class Controller implements Initializable, Constants, Observer{
     
     //GLOBAL MENU
     public void editConfig() {
-        if (Desktop.isDesktopSupported()) {
-            new Thread(() -> {
-                try {
-                    Desktop.getDesktop().open(files.dlConfig.getConfigPath().toFile());
-                } catch (IOException e) {
-                    Printer.print(e.toString());
-                }
-            }).start();
-        }
+        openFile(files.dlConfig.getConfigPath().toFile());
     }
     
     public void importConfig(){
@@ -137,6 +129,10 @@ public class Controller implements Initializable, Constants, Observer{
             Printer.print(e.toString());
         }
         refresh();
+    }
+    
+    public void openInFolder(){
+        openFile(files.getPwad(lwPwad.getSelectionModel().getSelectedIndex()).getFparent());
     }
     
     
@@ -226,6 +222,18 @@ public class Controller implements Initializable, Constants, Observer{
         fileChooser.setTitle("Open Resource File");
         fileChooser.getExtensionFilters().addAll(ef);
         return  fileChooser.showOpenMultipleDialog(DoomLauncher.getPrimaryStage());
+    }
+    
+    public void openFile(File f) {
+        if (Desktop.isDesktopSupported()) {
+            new Thread(() -> {
+                try {
+                    Desktop.getDesktop().open(f);
+                } catch (IOException e) {
+                    Printer.print(e.toString());
+                }
+            }).start();
+        }
     }
 
     @Override

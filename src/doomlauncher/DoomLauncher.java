@@ -7,15 +7,10 @@ package doomlauncher;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-import JConfig.JConfig;
 import java.io.IOException;
-import java.util.Observer;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
 /**
  *
  * @author Plett Oleg
@@ -43,6 +38,7 @@ public class DoomLauncher extends Application implements Constants{
         stageDoomLauncher.setMinWidth(WINDOW_WIDTH);
         setPrimaryStage(stageDoomLauncher);
         Scene sceneDoomLauncher = new Scene(rootNode, WINDOW_WIDTH, WINDOW_HEIGHT);
+        sceneDoomLauncher.getStylesheets().add("gui/DoomLauncher.css");
         stageDoomLauncher.setScene(sceneDoomLauncher);
         stageDoomLauncher.show();
        

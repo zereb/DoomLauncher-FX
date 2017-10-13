@@ -16,10 +16,14 @@ public class DLFile {
     
     private String name;
     private String path;
+    private String parent;
+    private File fparent;
     
     public DLFile(File f){
         name=f.getName();
         path=f.getAbsolutePath();
+        parent=f.getParent();
+        fparent=f.getParentFile();
        ////Printer.print(name+" : "+path);
     }
     
@@ -34,5 +38,16 @@ public class DLFile {
     public String getPath(){
         return path;
     }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public File getFparent() {
+        return fparent;
+    }
+    
+    
+    
     
 }

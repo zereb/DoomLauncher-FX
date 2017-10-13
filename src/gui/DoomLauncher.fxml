@@ -61,6 +61,7 @@
                                 <items>
                                   <MenuItem onAction="#movePwadUp" text="Move up" />
                                   <MenuItem onAction="#movePwadDown" text="Move down" />
+                                  <MenuItem onAction="#openInFolder" text="Open in a folder" />
                                 </items>
                               </ContextMenu>
                            </contextMenu>

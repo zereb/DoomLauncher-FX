@@ -10,7 +10,7 @@ import java.util.Observable;
 
 /**
  *
- * @author loludaed
+ * @author Plett oleg
  */
 public class Printer extends Observable{
     public static Printer printer;

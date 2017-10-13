@@ -13,9 +13,9 @@ import java.io.InputStreamReader;
 import java.util.Observable;
 
 /**
- * @author loludaed
+ * @author Plett oleg
  *
- * @author loludaed
+ * @author Plett oleg
  */
 public class ProcessBuilderD extends Observable implements Runnable{
     private String outEXELine;
