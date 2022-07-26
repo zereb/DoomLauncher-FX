@@ -1,3 +1,6 @@
-/nbproject/private/
+# Default ignored files
+/shelf/
+/workspace.xml
 /build/
-/dist/
+/.idea/
+/.gradle/
