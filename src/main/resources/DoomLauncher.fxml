@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.zereb.doomlauncher.Controller">
+    <AnchorPane VBox.vgrow="ALWAYS">
+        <VBox spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+              AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+            </padding>
+            <HBox alignment="CENTER" spacing="5.0">
+                <Label text="Engine:"/>
+                <TextField fx:id="engineTextField" onAction="#setEngineExecutable"/>
+                <Button onAction="#changeEngine" text="Set engine"/>
+
+                <Label text="IWad:"/>
+                <Label fx:id="iwadLabel"/>
+                <Button onAction="#changeIwad" text="Set iwad"/>
+            </HBox>
+            <Label text="Addition files:"/>
+            <AnchorPane VBox.vgrow="ALWAYS">
+                <ListView fx:id="pwadListView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                          AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <contextMenu>
+                        <ContextMenu>
+                            <items>
+                                <MenuItem onAction="#movePwadUp" text="Move up"/>
+                                <MenuItem onAction="#movePwadDown" text="Move down"/>
+                                <MenuItem onAction="#openInFolder" text="Open in a folder"/>
+                            </items>
+                        </ContextMenu>
+                    </contextMenu>
+                </ListView>
+            </AnchorPane>
+            <HBox alignment="CENTER" spacing="5.0">
+                <Button onAction="#addPwad" text="Add"/>
+                <Button onAction="#removePwad" text="Remove"/>
+                <Button onAction="#removeAllPwad" text="Remove all"/>
+                <Button onAction="#savePreset" text="Save preset"/>
+                <Button onAction="#loadPreset" text="Load preset"/>
+            </HBox>
+            <TabPane prefHeight="300.0" tabClosingPolicy="UNAVAILABLE">
+                <Tab text="Out">
+                    <AnchorPane>
+                        <TextArea fx:id="outputTextArea" editable="false" AnchorPane.bottomAnchor="0.0"
+                                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                                  AnchorPane.topAnchor="0.0"/>
+                    </AnchorPane>
+                </Tab>
+                <Tab text="Custom parameters">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                        <TextArea fx:id="customParamsTextArea"
+                                  AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                    </AnchorPane>
+                </Tab>
+            </TabPane>
+            <HBox alignment="CENTER" spacing="5.0">
+                <Button onAction="#showCommandLine" text="Command line"/>
+                <Button onAction="#launch" text="Launch"/>
+            </HBox>
+        </VBox>
+    </AnchorPane>
+</VBox>
