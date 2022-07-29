@@ -8,8 +8,8 @@ package com.zereb.doomlauncher;
 import com.zereb.doomlauncher.models.Preset;
 import com.zereb.doomlauncher.services.*;
 import javafx.fxml.Initializable;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -18,10 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -98,15 +96,18 @@ public class Controller implements Initializable{
     }
 
     public void showCommandLine(){
+        StringBuilder builder = new StringBuilder();
         for (String cmd : getCMD()) {
-            UiLogger.println(cmd);
+            builder.append(cmd).append(" ");
         }
+        UiLogger.println(builder.toString());
     }
 
     public void savePreset() {
         Preset preset = new Preset();
         preset.iwad = iwadService.currentIwad.toString();
         preset.engine = engineService.getCurrent().toString();
+        preset.customCommands = customParamsTextArea.getText();
         preset.pwads = pwadService.pwads.stream()
             .map(Path::toString)
             .collect(Collectors.toList());
@@ -120,6 +121,7 @@ public class Controller implements Initializable{
             pwadService.setPwads(preset.pwads);
             iwadService.currentIwad.set(Path.of(preset.iwad));
             engineService.changeCurrentExec(preset.engine);
+            customParamsTextArea.setText(preset.customCommands);
         });
     }
 
@@ -135,6 +137,7 @@ public class Controller implements Initializable{
         commands.add(engineService.getCurrent().toString());
         commands.add("-iwad");
         commands.add(iwadService.currentIwad.toString());
+        commands.addAll(Arrays.asList(customParamsTextArea.getText().split(" ")));
 
         for (Path pwad : pwadService.pwads) {
             var pwadName = pwad.getFileName().toString();

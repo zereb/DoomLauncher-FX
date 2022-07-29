@@ -10,14 +10,13 @@ public class Engine {
     private Path path;
     public final SimpleStringProperty engineName;
     public final SimpleStringProperty engineAbsolutePath;
-    private final ConfigService configService;
 
     public Engine() {
         engineAbsolutePath = new SimpleStringProperty();
         engineName = new SimpleStringProperty();
         engineAbsolutePath.addListener((observable, oldValue, newValue) -> set(Path.of(newValue)));
 
-        configService = ConfigService.getInstance();
+        ConfigService configService = ConfigService.getInstance();
         if (configService.config.lastEngine != null) {
             set(Path.of(configService.config.lastEngine));
         }

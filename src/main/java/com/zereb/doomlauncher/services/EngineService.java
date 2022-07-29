@@ -2,13 +2,13 @@ package com.zereb.doomlauncher.services;
 
 import com.zereb.doomlauncher.DoomLauncher;
 import com.zereb.doomlauncher.models.Engine;
-import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.Optional;
+import java.util.*;
 
 public class EngineService {
 
