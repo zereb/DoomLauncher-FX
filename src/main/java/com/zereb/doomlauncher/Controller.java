@@ -154,7 +154,11 @@ public class Controller implements Initializable{
         commands.add(engineService.getCurrent().toString());
         commands.add("-iwad");
         commands.add(iwadService.currentIwad.toString());
-        commands.addAll(Arrays.asList(customParamsTextArea.getText().split(" ")));
+        String customParams = customParamsTextArea.getText();
+        if (customParams != null) {
+            commands.addAll(Arrays.asList(customParams.split(" ")));
+        }
+
 
         for (Path pwad : pwadService.pwads) {
             var pwadName = pwad.getFileName().toString();
