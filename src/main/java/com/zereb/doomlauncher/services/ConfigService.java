@@ -92,7 +92,8 @@ public class ConfigService {
         if (selectedFile != null) {
             try {
                 String json = gson.toJson(preset);
-                Path fileToSave = Path.of(selectedFile.getAbsolutePath() + ".preset");
+                String extension = selectedFile.getName().endsWith(".preset") ? "" : ".preset";
+                Path fileToSave = Path.of(selectedFile.getAbsolutePath() + extension);
                 Files.writeString(fileToSave, json, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
                 UiLogger.println("Saved preset: " + json);
             } catch (IOException e) {

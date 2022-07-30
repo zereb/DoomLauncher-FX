@@ -9,7 +9,7 @@ import java.nio.file.Path;
 
 public class IwadService {
 
-    public static final FileChooser.ExtensionFilter EXTENSION_FILTER_WAD = new FileChooser.ExtensionFilter("Wad files", "*.wad");
+    public static final FileChooser.ExtensionFilter EXTENSION_FILTER_WAD = new FileChooser.ExtensionFilter("Wad files", "*.wad", "*.WAD");
     private static IwadService instance;
 
     public final Iwad currentIwad = new Iwad();

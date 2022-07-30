@@ -7,6 +7,7 @@ package com.zereb.doomlauncher;
 
 import com.zereb.doomlauncher.models.Preset;
 import com.zereb.doomlauncher.services.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
@@ -88,7 +89,23 @@ public class Controller implements Initializable{
         pwadService.moveWadUp(index);
         pwadListView.getSelectionModel().selectPrevious();
     }
-    
+
+    public void movePwadToStart(ActionEvent actionEvent) {
+        int index = pwadListView.getSelectionModel().getSelectedIndex();
+        boolean moved = pwadService.moveWadToStart(index);
+        if (moved) {
+            pwadListView.getSelectionModel().selectFirst();
+        }
+    }
+
+    public void movePwadToEnd(ActionEvent actionEvent) {
+        int index = pwadListView.getSelectionModel().getSelectedIndex();
+        boolean moved = pwadService.moveWadToEnd(index);
+        if (moved) {
+            pwadListView.getSelectionModel().selectLast();
+        }
+    }
+
     public void openInFolder(){
         int index = pwadListView.getSelectionModel().getSelectedIndex();
         if (index > 0)
@@ -159,6 +176,11 @@ public class Controller implements Initializable{
         }
     }
 
+    public void setEngineExecutable() {
+        engineService.changeCurrentExec(engineTextField.getText());
+    }
+
+
     private void safeOpenFile(File f) {
         try {
             Desktop.getDesktop().open(f);
@@ -167,7 +189,4 @@ public class Controller implements Initializable{
         }
     }
 
-    public void setEngineExecutable() {
-        engineService.changeCurrentExec(engineTextField.getText());
-    }
 }

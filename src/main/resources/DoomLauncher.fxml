@@ -29,6 +29,9 @@
                             <items>
                                 <MenuItem onAction="#movePwadUp" text="Move up"/>
                                 <MenuItem onAction="#movePwadDown" text="Move down"/>
+                                <MenuItem onAction="#movePwadToStart" text="Move to start"/>
+                                <MenuItem onAction="#movePwadToEnd" text="Move to end"/>
+                                <MenuItem onAction="#movePwadDown" text="Move down"/>
                                 <MenuItem onAction="#openInFolder" text="Open in a folder"/>
                             </items>
                         </ContextMenu>

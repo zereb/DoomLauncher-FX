@@ -14,7 +14,10 @@ import java.util.stream.Collectors;
 
 public class PwadService {
 
-    public static final FileChooser.ExtensionFilter EXTENSION_FILTER_PWAD = new FileChooser.ExtensionFilter("Wad files", "*.wad", "*.pk3", "*.zip", "*.ini");
+    public static final FileChooser.ExtensionFilter EXTENSION_FILTER_PWAD = new FileChooser.ExtensionFilter("Wad files",
+        "*.wad", "*.pk3", "*.zip", "*.ini",
+                   "*.WAD", "*.PK3", "*.ZIP", "*.INI"
+    );
     private static PwadService instance;
 
     public final ObservableList<Path> pwads = FXCollections.observableArrayList();
@@ -39,6 +42,21 @@ public class PwadService {
         pwads.addAll(newPwads);
 
     }
+
+    public boolean moveWadToStart(int index) {
+        if (pwads.size() < 2) return false;
+
+        Collections.swap(pwads, index, 0);
+        return true;
+    }
+
+    public boolean moveWadToEnd(int index) {
+        if (pwads.size() < 2) return false;
+
+        Collections.swap(pwads, index, pwads.size() - 1);
+        return true;
+    }
+
 
     public void moveWadUp(int index) {
         boolean notOutOfBounds = pwads.size() > index;
