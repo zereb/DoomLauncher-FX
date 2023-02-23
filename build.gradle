@@ -2,13 +2,12 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.10'
-    id 'org.beryx.jlink' version '2.24.4'
+    id 'org.beryx.jlink' version '2.26.0'
 }
 
 group 'com.zereb.doomlauncher'
 version '1.0-SNAPSHOT'
 mainClassName = "com.zereb.doomlauncher.DoomLauncher"
-
 
 repositories {
     mavenCentral()
@@ -16,20 +15,20 @@ repositories {
 
 javafx {
     version = "17.0.1"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = ['javafx.controls', 'javafx.fxml']
 }
 
 jlink {
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    addOptions('--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages')
 
     launcher {
         name = 'DoomLauncherFX'
+        noConsole = true
     }
     jpackage {
-         jpackageHome = '/usr/lib/jvm/java-18-openjdk'
+        jpackageHome = '/usr/lib/jvm/default'
     }
 }
-
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
@@ -41,3 +40,37 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+tasks.register('appImageCopy', Copy) {
+    setGroup "deploy"
+    dependsOn jpackageImage
+    mustRunAfter jpackageImage
+
+    from layout.projectDirectory.file("deploy/icon.png"), layout.projectDirectory.file("deploy/AppRun"), layout.projectDirectory.file("deploy/DoomLauncher.desktop")
+    into layout.buildDirectory.dir("jpackage/DoomLauncherFX")
+    println("Copied files")
+}
+
+tasks.register('createAppImage') {
+    setGroup "deploy"
+    dependsOn appImageCopy
+    mustRunAfter appImageCopy
+
+    doLast {
+        exec {
+            workingDir layout.buildDirectory.dir("jpackage")
+            commandLine "appimagetool", "DoomLauncherFX/"
+        }
+    }
+}
+
+tasks.register('copyAppImageToDeploy', Copy) {
+    setGroup "deploy"
+    dependsOn createAppImage
+    mustRunAfter createAppImage
+
+    from layout.buildDirectory.file("jpackage/DoomLauncher-x86_64.AppImage")
+    into layout.projectDirectory.dir("deploy")
+}
+
+

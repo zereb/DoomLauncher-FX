@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=DoomLauncher
+Exec=DoomLauncherFX
+Icon=icon
+Type=Application
+Categories=Game
