@@ -20,13 +20,17 @@ javafx {
 
 jlink {
     addOptions('--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages')
+    def currentOs = org.gradle.internal.os.OperatingSystem.current()
 
     launcher {
         name = 'DoomLauncherFX'
         noConsole = true
     }
     jpackage {
-        jpackageHome = '/usr/lib/jvm/default'
+//        jpackageHome = '/usr/lib/jvm/default'
+        if(currentOs.isWindows()) {
+            installerOptions(['--win-dir-chooser', '--win-shortcut', '--win-menu'])
+        }
     }
 }
 
