@@ -8,7 +8,7 @@ plugins {
 group 'com.zereb.doomlauncher'
 version '1.0-SNAPSHOT'
 mainClassName = "com.zereb.doomlauncher.DoomLauncher"
-
+application.mainModule = "com.zereb.doomlauncher"
 repositories {
     mavenCentral()
 }
@@ -16,6 +16,16 @@ repositories {
 javafx {
     version = "17.0.1"
     modules = ['javafx.controls', 'javafx.fxml']
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'com.google.code.gson:gson:2.9.0'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 jlink {
@@ -28,21 +38,13 @@ jlink {
     }
     jpackage {
 //        jpackageHome = '/usr/lib/jvm/default'
+        appVersion = "1.0.1"
         if(currentOs.isWindows()) {
-            installerOptions(['--win-dir-chooser', '--win-shortcut', '--win-menu'])
+            icon = layout.projectDirectory.file("deploy/icon.ico")
+            installerType = "msi"
+            installerOptions += ['--win-dir-chooser', '--win-shortcut', '--win-menu', '--win-upgrade-uuid', UUID.randomUUID().toString()]
         }
     }
-}
-
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    implementation 'com.google.code.gson:gson:2.9.0'
-
-}
-
-test {
-    useJUnitPlatform()
 }
 
 tasks.register('appImageCopy', Copy) {
@@ -76,5 +78,3 @@ tasks.register('copyAppImageToDeploy', Copy) {
     from layout.buildDirectory.file("jpackage/DoomLauncher-x86_64.AppImage")
     into layout.projectDirectory.dir("deploy")
 }
-
-

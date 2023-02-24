@@ -16,7 +16,8 @@ import java.util.Optional;
 public class ConfigService {
 
     public static ConfigService instance;
-    public static final String XDG_CONFIG_HOME = System.getenv().get("XDG_CONFIG_HOME");
+    public static final String XDG_CONFIG_HOME = System.getenv().get("XDG_CONFIG_HOME") == null ? "" : System.getenv().get("XDG_CONFIG_HOME");
+
     public static final String CONFIG_PATH = XDG_CONFIG_HOME + "/DoomLauncherFx/config";
     public static final String CONFIG_FOLDER = XDG_CONFIG_HOME + "/DoomLauncherFx/";
 
@@ -40,7 +41,7 @@ public class ConfigService {
 
     public void loadConfig() {
         try {
-            String json = new String(Files.readAllBytes(Path.of(CONFIG_PATH)));
+            String json = new String(Files.readAllBytes(Path.of(CONFIG_PATH).toAbsolutePath()));
             config = gson.fromJson(json, Config.class);
             UiLogger.println("loaded config: " + config);
         } catch (IOException e) {
@@ -106,7 +107,7 @@ public class ConfigService {
         try {
             Path configFolder = Path.of(CONFIG_FOLDER).toAbsolutePath();
             if (!Files.exists(configFolder)) {
-                Files.createDirectory(configFolder);
+                Files.createDirectories(configFolder);
                 UiLogger.println("Created replays directory: " + configFolder);
             }
         } catch (IOException e) {
