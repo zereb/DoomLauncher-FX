@@ -37,6 +37,7 @@ jlink {
         noConsole = true
     }
     jpackage {
+        appVersion = "1.0.1"
 //        jpackageHome = '/usr/lib/jvm/default'
         appVersion = "1.0.1"
         if(currentOs.isWindows()) {
